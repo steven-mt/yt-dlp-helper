@@ -1,12 +1,38 @@
 import yt_dlp
 import yt_dlp.utils
 import subprocess
-import pathlib
 import os
 import textwrap
+from pathlib import Path
+from configparser import ConfigParser
 
-YTDLP_LOCATION = "D:/yt-dlp/yt-dlp.exe"
-FFMPEG_LOCATION = "D:/yt-dlp/ffmpeg.exe"
+config_obj = ConfigParser()
+config_obj.read("config.ini")
+try:
+    path_cfg = config_obj["paths"]
+    YTDLP_PATH = path_cfg["ytdlp_path"]
+    FFMPEG_PATH = path_cfg["ffmpeg_path"]
+except KeyError:
+    print("Path information not found, input paths: ")
+    
+    ytdlp_path_input = input("Enter path to yt-dlp.exe: ")
+    while not (Path(ytdlp_path_input).is_file() and Path(ytdlp_path_input).stem == "yt-dlp"):
+        ytdlp_path_input = input("Invalid input, try again: ")
+    
+    ffmpeg_path_input = input("Enter path to ffmpeg.exe: ")
+    while not (Path(ffmpeg_path_input).is_file() and Path(ffmpeg_path_input).stem == "ffmpeg"):
+        ffmpeg_path_input = input("Invalid input, try again: ")
+    
+    config_obj["paths"] = {
+        "ytdlp_path": ytdlp_path_input,
+        "ffmpeg_path": ffmpeg_path_input
+    }
+
+    with open("config.ini", "w") as config_file:
+        config_obj.write(config_file)
+    
+    YTDLP_PATH = ytdlp_path_input
+    FFMPEG_PATH = ffmpeg_path_input
 
 REENCODE_FORMATS = (
     "avi",
@@ -49,7 +75,7 @@ formats, separated by "/", e.g. "mp4/mkv".
 Ignored if no merge is required. (currently
 supported: {", ".join(MERGE_FORMATS)})"""
 
-ydl_opts = {"ffmpeg_location": FFMPEG_LOCATION}
+ydl_opts = {"ffmpeg_location": FFMPEG_PATH}
 
 url = "https://www.youtube.com/watch?v=BaW_jenozKc"
 
@@ -84,7 +110,7 @@ while do_restart:
         directory_choice = input("Invalid option. Try again: ")
 
     if directory_choice == "2":
-        directory = pathlib.Path(YTDLP_LOCATION).resolve().parent
+        directory = Path(YTDLP_PATH).resolve().parent
         os.chdir(directory)
 
     option = input(textwrap.dedent("""
@@ -217,7 +243,7 @@ while do_restart:
                                 break
 
                 subprocess.run(
-                    f"{YTDLP_LOCATION} -f {format_select} "
+                    f"{YTDLP_PATH} -f {format_select} "
                     f"--recode-video {reencode_format_complete} {url}"
                 )
 
@@ -277,7 +303,7 @@ while do_restart:
                         print("Unavailable format.")
                 
                 subprocess.run(
-                    f"{YTDLP_LOCATION} -f {format_choice} "
+                    f"{YTDLP_PATH} -f {format_choice} "
                     f"--recode-video {initial_format}>{recode_format} {url}")
 
     print()
