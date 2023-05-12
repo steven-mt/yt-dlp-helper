@@ -6,10 +6,10 @@ import textwrap
 from pathlib import Path
 from configparser import ConfigParser
 
-config_obj = ConfigParser()
-config_obj.read("config.ini")
+parser = ConfigParser()
+parser.read("config.ini")
 try:
-    path_cfg = config_obj["paths"]
+    path_cfg = parser["paths"]
     YTDLP_PATH = path_cfg["ytdlp_path"]
     FFMPEG_PATH = path_cfg["ffmpeg_path"]
 except KeyError:
@@ -23,13 +23,13 @@ except KeyError:
     while not (Path(ffmpeg_path_input).is_file() and Path(ffmpeg_path_input).stem == "ffmpeg"):
         ffmpeg_path_input = input("Invalid input, try again: ")
     
-    config_obj["paths"] = {
+    parser["paths"] = {
         "ytdlp_path": ytdlp_path_input,
         "ffmpeg_path": ffmpeg_path_input
     }
 
-    with open("config.ini", "w") as config_file:
-        config_obj.write(config_file)
+    with open("config.ini", "w") as cfg_file:
+        parser.write(cfg_file)
     
     YTDLP_PATH = ytdlp_path_input
     FFMPEG_PATH = ffmpeg_path_input
@@ -101,17 +101,56 @@ while do_restart:
 
     #         url = input("Input URL: ")
 
-    directory_choice = input(textwrap.dedent("""
+    dir_choice = input(textwrap.dedent("""
     Save file(s) in:
-     - [1] current directory
-     - [2] yt-dlp directory
+     - [1] current working directory
+     - [2] yt-dlp.exe directory
+     - [3] new directory (choose between one time only or save the directory)
+     - [4] saved directory
      : """))
-    while directory_choice not in ("1", "2"):
-        directory_choice = input("Invalid option. Try again: ")
+    while dir_choice not in ("1", "2", "3", "4"):
+        dir_choice = input("Invalid option. Try again: ")
+    
+    if dir_choice == "2":
 
-    if directory_choice == "2":
-        directory = Path(YTDLP_PATH).resolve().parent
-        os.chdir(directory)
+        save_dir = str(Path(YTDLP_PATH).resolve().parent)
+
+    elif dir_choice == "3":
+        
+        save_dir = input("Enter custom directory: ")
+        while not Path(save_dir).is_dir():
+            save_dir = input("Invalid directory. Try again: ")
+        
+        save_choice = input("Would you like to save the directory? "
+                            "\nAny existing saved directory will be overwritten. [Y/N] : ")
+        while save_choice.lower() not in ("y", "n"):
+            save_choice = input("[Y/N] : ")
+        
+        if save_choice.lower() == "y":
+            
+            parser["saved_directory"] = {"save_dir": save_dir}
+
+            with open("config.ini", "w") as cfg_file:
+                parser.write(cfg_file)    
+    
+    elif dir_choice == "4":
+
+        try:
+            save_dir = parser["saved_directory"]["save_dir"]
+        except KeyError:
+
+            save_dir = input("No saved directory found. Enter new directory: ")
+            while not Path(save_dir).is_dir():
+                save_dir = input("Invalid directory. Try again: ")
+            
+            parser["saved_directory"] = {"save_dir": save_dir}
+            
+            with open("config.ini", "w") as cfg_file:
+                parser.write(cfg_file)
+    
+    if "save_dir" in locals():
+        print(save_dir)
+        ydl_opts["paths"] = {"home": save_dir}
 
     option = input(textwrap.dedent("""
     Choose an option:
@@ -171,7 +210,7 @@ while do_restart:
                         f"\n{REENCODE_FORMAT_DESC}\n\n{REENCODE_SYNTAX_DESC}\n\n{REENCODE_WARNING}\n"
                         f"\n{MERGE_FORMAT_DESC}\n"
                     )
-                elif output_choice in ("m", "r", "n"):
+                elif output_choice.lower() in ("m", "r", "n"):
                     break
 
             if output_choice.lower() == "m":
@@ -278,15 +317,15 @@ while do_restart:
 
                 if encode_choice == "?":
                     print(f"\n{REENCODE_FORMAT_DESC}\n\n{REENCODE_WARNING}\n")
-                elif encode_choice in ("y", "n"):
+                elif encode_choice.lower() in ("y", "n"):
                     break
 
-            if encode_choice == "n":
+            if encode_choice.lower() == "n":
                 
                 with yt_dlp.YoutubeDL(dict(ydl_opts, format=format_choice)) as ydl:
                     ydl.download(url)
 
-            elif encode_choice == "y":
+            elif encode_choice.lower() == "y":
                 
                 while True:
                     initial_format = input("Specify original format: ")
