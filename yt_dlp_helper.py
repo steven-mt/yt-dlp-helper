@@ -108,7 +108,7 @@ while do_restart:
      - [3] new directory (choose between one time only or save the directory)
      - [4] saved directory
      : """))
-    while dir_choice not in ("1", "2", "3", "4"):
+    while dir_choice not in {"1", "2", "3", "4"}:
         dir_choice = input("Invalid option. Try again: ")
     
     if dir_choice == "2":
@@ -123,7 +123,7 @@ while do_restart:
         
         save_choice = input("Would you like to save the directory? "
                             "\nAny existing saved directory will be overwritten. [Y/N] : ")
-        while save_choice.lower() not in ("y", "n"):
+        while save_choice.lower() not in {"y", "n"}:
             save_choice = input("[Y/N] : ")
         
         if save_choice.lower() == "y":
@@ -158,7 +158,7 @@ while do_restart:
      - [vc] Video (Choose Custom Video And Audio Files)
      - [1] Video Or Audio Only (Choose One File)
      : """))
-    while option not in ("vc", "va", "1"):
+    while option not in {"vc", "va", "1"}:
         option = input("Invalid option. Try again: ")
 
     print()
@@ -210,7 +210,7 @@ while do_restart:
                         f"\n{REENCODE_FORMAT_DESC}\n\n{REENCODE_SYNTAX_DESC}\n\n{REENCODE_WARNING}\n"
                         f"\n{MERGE_FORMAT_DESC}\n"
                     )
-                elif output_choice.lower() in ("m", "r", "n"):
+                elif output_choice.lower() in {"m", "r", "n"}:
                     break
 
             if output_choice.lower() == "m":
@@ -317,7 +317,7 @@ while do_restart:
 
                 if encode_choice == "?":
                     print(f"\n{REENCODE_FORMAT_DESC}\n\n{REENCODE_WARNING}\n")
-                elif encode_choice.lower() in ("y", "n"):
+                elif encode_choice.lower() in {"y", "n"}:
                     break
 
             if encode_choice.lower() == "n":
