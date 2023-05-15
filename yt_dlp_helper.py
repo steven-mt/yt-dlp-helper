@@ -1,7 +1,6 @@
 import yt_dlp
 import yt_dlp.utils
 import subprocess
-import os
 import textwrap
 from pathlib import Path
 from configparser import ConfigParser
@@ -154,8 +153,8 @@ while do_restart:
 
     option = input(textwrap.dedent("""
     Choose an option:
-     - [va] Video (Choose Best Quality Automatically)
-     - [vc] Video (Choose Custom Video And Audio Files)
+     - [va] Best Video (Choose Best Quality Automatically)
+     - [vc] Custom Video (Choose Custom Video And Audio Files)
      - [1] Video Or Audio Only (Choose One File)
      : """))
     while option not in {"vc", "va", "1"}:
