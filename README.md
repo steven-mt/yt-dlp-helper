@@ -6,14 +6,16 @@ A simple Python script that helps with using [yt-dlp](https://github.com/yt-dlp/
 
 - Python 3.7+ (following yt-dlp)  
 - yt_dlp Python package
-- yt-dlp.exe (the standalone binary, which you can find [here](https://github.com/yt-dlp/yt-dlp#release-files))
-- ffmpeg.exe
+- yt-dlp.exe[^1] (the standalone binary, which you can find [here](https://github.com/yt-dlp/yt-dlp#release-files))
+- ffmpeg.exe (you can find the links to some of the builds on the [ffmpeg website](https://www.ffmpeg.org/download.html), or you can get the custom builds for yt-dlp [here](https://github.com/yt-dlp/FFmpeg-Builds))
+
+[^1]: Since the --recode-video option does not seem to be available in the yt_dlp package, the script runs the yt-dlp.exe file instead only when downloading with this specific option as a workaround, which is why the binary is required despite already using the Python package.
 
 ## Usage
 
 ### Configuration File
 
-When first starting, the program will ask for the paths to the yt-dlp.exe and ffmpeg.exe files (you must include the file names and extension when giving the path, e.g. `C:\folder\yt-dlp.exe`).
+When first starting, the program will ask for the paths to the yt-dlp.exe and ffmpeg.exe files (you must include the file names and extensions when giving the path, e.g. `C:\folder\yt-dlp.exe`).
 
 A configuration file `config.ini` will be created at the same directory as the `yt_dlp_helper.py` file. This file contains the paths for yt-dlp.exe and ffmpeg.exe as mentioned above as well as the custom save directory if one has been set (see [File Save Locations](#file-save-locations)). You can edit this manually if you want to change these locations as long as the correct syntax is followed.
 
@@ -23,17 +25,17 @@ Note that although yt-dlp supports multiple websites, this script is only meant 
 
 After inputting the URL, there are three download options available:
 
-- Best Video: This uses the default format selection that yt-dlp uses to download the best available quality which you can see [here](https://github.com/yt-dlp/yt-dlp#format-selection)
+- Best video: This uses the default format selection that yt-dlp uses to download the best available quality which you can see [here](https://github.com/yt-dlp/yt-dlp#format-selection)
 
-- Custom Video: Lists all avaiable formats and allows you to choose the video and audio file that you want to download.
+- Custom video: Lists all avaiable formats and allows you to choose the video and audio file that you want to download.
 
   There are two further options avaiable once you have chosen your files:
 
-  - Merge: This is the --merge-output-format option from yt-dlp as seen [here](https://github.com/yt-dlp/yt-dlp#video-format-options:~:text=%2D%2Dmerge%2Doutput%2Dformat) which can also be found in their [YoutubeDL.py file](https://github.com/yt-dlp/yt-dlp/blob/master/yt_dlp/YoutubeDL.py), which is in the yt_dlp Python package
+  - Merge: This is the --merge-output-format option from yt-dlp as seen [here](https://github.com/yt-dlp/yt-dlp#video-format-options:~:text=%2D%2Dmerge%2Doutput%2Dformat) which can also be found in their [YoutubeDL module](https://github.com/yt-dlp/yt-dlp/blob/master/yt_dlp/YoutubeDL.py), in the yt_dlp Python package
   
-  - Re-encode: This is the [--recode-video option](https://github.com/yt-dlp/yt-dlp#video-format-options:~:text=else%20to%20mkv-,%2D%2Drecode%2Dvideo,-FORMAT%20%20%20%20%20%20%20%20%20%20%20Re%2Dencode) which does not seem to exist in the yt_dlp Python package (at least at the time of writing). This option is also available for the next download option "Video Or Audio Only"
+  - Re-encode: This is the [--recode-video option](https://github.com/yt-dlp/yt-dlp#video-format-options:~:text=else%20to%20mkv-,%2D%2Drecode%2Dvideo,-FORMAT%20%20%20%20%20%20%20%20%20%20%20Re%2Dencode) which does not seem to exist in the yt_dlp Python package[^1] (at least at the time of writing). This option is also available for the next download option, "Video or audio only"
 
-- Video Or Audio Only: Similar to the "Custom Video" option, but allows you to only choose one file. This would mostly be used for downloading audio-only files from Youtube, but can also be used to download a single video file that may or may not contain audio depending on the format.
+- Video or audio only: Similar to the "Custom Video" option, but allows you to only choose one file. This would mostly be used for downloading audio-only files from Youtube, but can also be used to download a single video file that may or may not contain audio depending on the format.
 
 ### File Save Locations
 
