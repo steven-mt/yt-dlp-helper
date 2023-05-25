@@ -2,14 +2,60 @@
 
 A simple Python script that helps with using [yt-dlp](https://github.com/yt-dlp/yt-dlp "yt-dlp GitHub").
 
+- [Requirements](#requirements)
+- [Download](#download)
+  - [Virtual Environment](#virtual-environment)
+  - [Installing dependencies using `requirements.txt`](#installing-dependencies-using-requirementstxt)
+- [Usage](#usage)
+  - [Configuration File](#configuration-file)
+  - [Download Options](#download-options)
+  - [File Save Locaitons](#file-save-locations)
+
 ## Requirements
 
 - Python 3.7+ (following yt-dlp)  
-- yt_dlp Python package
+- yt_dlp Python package (you can simply use the [requirements.txt](requirements.txt) file as shown in [this section](#installing-dependencies-using-requirementstxt))
 - yt-dlp.exe[^1] (the standalone binary, which you can find [here](https://github.com/yt-dlp/yt-dlp#release-files))
 - ffmpeg.exe (you can find the links to some of the builds on the [ffmpeg website](https://www.ffmpeg.org/download.html), or you can get the custom builds for yt-dlp [here](https://github.com/yt-dlp/FFmpeg-Builds))
 
 [^1]: Since the --recode-video option does not seem to be available in the yt_dlp package, the script runs the yt-dlp.exe file instead only when downloading with this specific option as a workaround, which is why the binary is required despite already using the Python package.
+
+## Download
+
+The only files you need to download from this repository are:
+
+- the Python file [yt_dlp_helper.py](yt_dlp_helper.py)
+- the pip requirements file [requirements.txt](requirements.txt)
+
+### Virtual Environment
+
+To isolate package installations from other projects, you may want to set up a Python virtual environment at your chosen directory by using the following command:
+
+```shell
+python -m venv /path/to/new/virtual/environment
+```
+
+For example, if you want to the folder to be named "venv": `python -m venv venv`
+
+To run the virtual environment, you can use
+
+```shell
+<path to virtual environment>/Scripts/activate
+```
+
+e.g. `./venv/Scripts/activate`
+
+Note: On Microsoft Windows, it may be required to enable the Activate.ps1 script by setting the execution policy for the user. You can do this by issuing the following PowerShell command:  
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+### Installing Dependencies Using `requirements.txt`
+
+```shell
+pip install -r requirements.txt
+```
 
 ## Usage
 
