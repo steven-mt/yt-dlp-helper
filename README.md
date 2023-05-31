@@ -27,6 +27,8 @@ The only files you need to download from this repository are:
 - the Python file [yt_dlp_helper.py](yt_dlp_helper.py)
 - the pip requirements file [requirements.txt](requirements.txt)
 
+If you would like to run the file directly, you can skip to [this section](#installing-dependencies-using-requirementstxt "Installing Dependencies Using requirements.txt"), but if you would like to edit and/or run the code in a virtual environment, you can go to the [next section](#virtual-environment "Virtual Environment").
+
 ### Virtual Environment
 
 To isolate package installations from other projects, you may want to set up a Python virtual environment at your chosen directory by using the following command:
@@ -53,9 +55,13 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 ### Installing Dependencies Using `requirements.txt`
 
+You can enter this command in the terminal to install the required packages:
+
 ```shell
 pip install -r requirements.txt
 ```
+
+You should then be able to run the `yt_dlp_helper.py` file.
 
 ## Usage
 
